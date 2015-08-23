@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Vector` trait in crate `stack`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Vector">
+
+    <title>stack::Vector - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='index.html'>stack</a></p><script>window.sidebarCurrent = {name: 'Vector', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content trait">
+<h1 class='fqn'><span class='in-band'>Trait <a href='index.html'>stack</a>::<wbr><a class='trait' href=''>Vector</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-2440' class='srclink' href='../src/stack/vector.rs.html#6-164' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait Vector {
+    type Item;
+    fn <a href='#tymethod.with_capacity' class='fnname'>with_capacity</a>(cap: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span>;
+    fn <a href='#tymethod.capacity' class='fnname'>capacity</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>;
+    fn <a href='#tymethod.reserve' class='fnname'>reserve</a>(&amp;mut self, additional: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>);
+    fn <a href='#tymethod.reserve_exact' class='fnname'>reserve_exact</a>(&amp;mut self, additional: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>);
+    fn <a href='#tymethod.shrink_to_fit' class='fnname'>shrink_to_fit</a>(&amp;mut self);
+    fn <a href='#tymethod.into_boxed_slice' class='fnname'>into_boxed_slice</a>(self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>[Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>]</a>&gt;;
+    unsafe fn <a href='#tymethod.set_len' class='fnname'>set_len</a>(&amp;mut self, len: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>);
+    fn <a href='#tymethod.len' class='fnname'>len</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>;
+    fn <a href='#tymethod.as_ptr' class='fnname'>as_ptr</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a></a>;
+    fn <a href='#tymethod.as_mut_ptr' class='fnname'>as_mut_ptr</a>(&amp;mut self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a></a>;
+
+    fn <a href='#method.new' class='fnname'>new</a>() -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span> { ... }
+    fn <a href='#method.truncate' class='fnname'>truncate</a>(&amp;mut self, len: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) { ... }
+    fn <a href='#method.swap_remove' class='fnname'>swap_remove</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a> { ... }
+    fn <a href='#method.insert' class='fnname'>insert</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, element: Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>) { ... }
+    fn <a href='#method.remove' class='fnname'>remove</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a> { ... }
+    fn <a href='#method.retain' class='fnname'>retain</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;(&amp;mut self, f: F) <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span> { ... }
+    fn <a href='#method.push' class='fnname'>push</a>(&amp;mut self, value: Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>) { ... }
+    fn <a href='#method.pop' class='fnname'>pop</a>(&amp;mut self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>&gt; { ... }
+    fn <a href='#method.clear' class='fnname'>clear</a>(&amp;mut self) { ... }
+    fn <a href='#method.is_empty' class='fnname'>is_empty</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a> { ... }
+    fn <a href='#method.push_cap' class='fnname'>push_cap</a>(&amp;mut self, value: Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>&gt; { ... }
+    fn <a href='#method.insert_cap' class='fnname'>insert_cap</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, element: Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>&gt; { ... }
+    fn <a href='#method.as_slice' class='fnname'>as_slice</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a>Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a><a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a> { ... }
+    fn <a href='#method.as_mut_slice' class='fnname'>as_mut_slice</a>(&amp;mut self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;mut [</a>Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a><a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a> { ... }
+    unsafe fn <a href='#method.uninitialized_resize' class='fnname'>uninitialized_resize</a>(&amp;mut self, new_len: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) { ... }
+}</pre>
+            <h2 id='associated-types'>Associated Types</h2>
+            <div class='methods'>
+        <h3 id='associatedtype.Item' class='method stab '><code>type Item</code></h3></div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.with_capacity' class='method stab '><code>fn <a href='#tymethod.with_capacity' class='fnname'>with_capacity</a>(cap: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span></code></h3><h3 id='tymethod.capacity' class='method stab '><code>fn <a href='#tymethod.capacity' class='fnname'>capacity</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h3><h3 id='tymethod.reserve' class='method stab '><code>fn <a href='#tymethod.reserve' class='fnname'>reserve</a>(&amp;mut self, additional: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h3><h3 id='tymethod.reserve_exact' class='method stab '><code>fn <a href='#tymethod.reserve_exact' class='fnname'>reserve_exact</a>(&amp;mut self, additional: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h3><h3 id='tymethod.shrink_to_fit' class='method stab '><code>fn <a href='#tymethod.shrink_to_fit' class='fnname'>shrink_to_fit</a>(&amp;mut self)</code></h3><h3 id='tymethod.into_boxed_slice' class='method stab '><code>fn <a href='#tymethod.into_boxed_slice' class='fnname'>into_boxed_slice</a>(self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html' title='alloc::boxed::Box'>Box</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>[Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>]</a>&gt;</code></h3><h3 id='tymethod.set_len' class='method stab '><code>unsafe fn <a href='#tymethod.set_len' class='fnname'>set_len</a>(&amp;mut self, len: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h3><h3 id='tymethod.len' class='method stab '><code>fn <a href='#tymethod.len' class='fnname'>len</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a></code></h3><h3 id='tymethod.as_ptr' class='method stab '><code>fn <a href='#tymethod.as_ptr' class='fnname'>as_ptr</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*const Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a></a></code></h3><h3 id='tymethod.as_mut_ptr' class='method stab '><code>fn <a href='#tymethod.as_mut_ptr' class='fnname'>as_mut_ptr</a>(&amp;mut self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a></a></code></h3></div>
+            <h2 id='provided-methods'>Provided Methods</h2>
+            <div class='methods'>
+        <h3 id='method.new' class='method stab '><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; Self <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span></code></h3><h3 id='method.truncate' class='method stab '><code>fn <a href='#method.truncate' class='fnname'>truncate</a>(&amp;mut self, len: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h3><h3 id='method.swap_remove' class='method stab '><code>fn <a href='#method.swap_remove' class='fnname'>swap_remove</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a></code></h3><h3 id='method.insert' class='method stab '><code>fn <a href='#method.insert' class='fnname'>insert</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, element: Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>)</code></h3><h3 id='method.remove' class='method stab '><code>fn <a href='#method.remove' class='fnname'>remove</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a></code></h3><h3 id='method.retain' class='method stab '><code>fn <a href='#method.retain' class='fnname'>retain</a>&lt;F: <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.FnMut.html' title='core::ops::FnMut'>FnMut</a>(&amp;Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a>&gt;(&amp;mut self, f: F) <span class='where'>where Self: <a class='trait' href='http://doc.rust-lang.org/nightly/core/marker/trait.Sized.html' title='core::marker::Sized'>Sized</a></span></code></h3><h3 id='method.push' class='method stab '><code>fn <a href='#method.push' class='fnname'>push</a>(&amp;mut self, value: Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>)</code></h3><h3 id='method.pop' class='method stab '><code>fn <a href='#method.pop' class='fnname'>pop</a>(&amp;mut self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>&gt;</code></h3><h3 id='method.clear' class='method stab '><code>fn <a href='#method.clear' class='fnname'>clear</a>(&amp;mut self)</code></h3><h3 id='method.is_empty' class='method stab '><code>fn <a href='#method.is_empty' class='fnname'>is_empty</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h3><h3 id='method.push_cap' class='method stab '><code>fn <a href='#method.push_cap' class='fnname'>push_cap</a>(&amp;mut self, value: Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>, Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>&gt;</code></h3><h3 id='method.insert_cap' class='method stab '><code>fn <a href='#method.insert_cap' class='fnname'>insert_cap</a>(&amp;mut self, index: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>, element: Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a>&gt;</code></h3><h3 id='method.as_slice' class='method stab '><code>fn <a href='#method.as_slice' class='fnname'>as_slice</a>(&amp;self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a>Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a><a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a></code></h3><h3 id='method.as_mut_slice' class='method stab '><code>fn <a href='#method.as_mut_slice' class='fnname'>as_mut_slice</a>(&amp;mut self) -&gt; <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;mut [</a>Self::<a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Item</a><a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a></code></h3><h3 id='method.uninitialized_resize' class='method stab '><code>unsafe fn <a href='#method.uninitialized_resize' class='fnname'>uninitialized_resize</a>(&amp;mut self, new_len: <a href='http://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>)</code></h3></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><code>impl&lt;T&gt; <a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Vector</a> for <a class='struct' href='http://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;T&gt;</code></li>
+<li><code>impl&lt;T: <a class='trait' href='../stack/trait.Array.html' title='stack::Array'>Array</a>&gt; <a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Vector</a> for <a class='struct' href='../stack/struct.ArrayVec.html' title='stack::ArrayVec'>ArrayVec</a>&lt;T&gt;</code></li>
+<li><code>impl&lt;T: <a class='trait' href='../stack/trait.Array.html' title='stack::Array'>Array</a>, S: <a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Vector</a>&lt;Item=T::Item&gt; + <a class='trait' href='../stack/trait.Spilled.html' title='stack::Spilled'>Spilled</a>&lt;<a class='struct' href='../stack/struct.ArrayVec.html' title='stack::ArrayVec'>ArrayVec</a>&lt;T&gt;&gt;&gt; <a class='trait' href='../stack/trait.Vector.html' title='stack::Vector'>Vector</a> for <a class='struct' href='../stack/struct.SmallVec.html' title='stack::SmallVec'>SmallVec</a>&lt;T, S&gt;</code></li>
+</ul><script type="text/javascript" async
+                              src="../implementors/stack/trait.Vector.js">
+                      </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "stack";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>
