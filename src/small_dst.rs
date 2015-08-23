@@ -6,10 +6,27 @@ use std::slice::{from_raw_parts, from_raw_parts_mut};
 use std::marker;
 use ::{ArrayVec, Vector};
 
-#[derive(Clone)]
+#[macro_export]
+macro_rules! small_dst {
+    ($x:expr) => {
+        {
+            let v = $x;
+            let dst = unsafe { $crate::SmallDST::new_ref(&v as &_, &v) };
+            ::std::mem::forget(v);
+            dst
+        }
+    };
+}
+
 pub struct SmallDST<T: ?Sized, A: Vector<Item=usize> = ArrayVec<[usize; 9]>> {
     data: A,
     _phantom: marker::PhantomData<T>,
+}
+
+impl<T: ?Sized + Clone, A: Vector<Item=usize>> Clone for SmallDST<T, A> {
+    fn clone(&self) -> Self {
+        small_dst!((&**self).clone())
+    }
 }
 
 impl<T: ?Sized, A: Vector<Item=usize>> SmallDST<T, A> {
@@ -153,16 +170,4 @@ impl<T: ?Sized + fmt::Debug, A: Vector<Item=usize>> fmt::Debug for SmallDST<T, A
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         fmt::Debug::fmt(&**self, fmt)
     }
-}
-
-#[macro_export]
-macro_rules! small_dst {
-    ($x:expr) => {
-        {
-            let v = $x;
-            let dst = unsafe { $crate::SmallDST::new_ref(&v as &_, &v) };
-            ::std::mem::forget(v);
-            dst
-        }
-    };
 }
