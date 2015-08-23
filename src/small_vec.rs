@@ -1,7 +1,9 @@
+use std::fmt;
 use std::mem::replace;
 use std::ptr::copy_nonoverlapping;
 use std::ops::{Deref, DerefMut};
 use std::iter::FromIterator;
+use std::hash::{Hash, Hasher};
 use unreachable::unreachable;
 use coalesce::Coalesce2;
 use array_vec::ArrayVec;
@@ -29,7 +31,6 @@ impl<T: Array> Spilled<ArrayVec<T>> for Vec<T::Item> {
     }
 }
 
-#[derive(Debug, Hash)]
 pub struct SmallVec<T: Array, S = Vec<<T as Array>::Item>>(Coalesce2<ArrayVec<T>, S>);
 
 impl<T: Array, S: Clone> Clone for SmallVec<T, S> where ArrayVec<T>: Clone {

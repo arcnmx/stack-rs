@@ -12,6 +12,7 @@ license = "MIT"
 
 [dependencies]
 coalesce = "0.1"
+nodrop = "0.1"
 unreachable = "0.0"
 
 [features]

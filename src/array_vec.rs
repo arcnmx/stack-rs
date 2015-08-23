@@ -1,3 +1,5 @@
+use std::fmt;
+use std::hash::{Hash, Hasher};
 use std::mem::{size_of, uninitialized};
 use std::ptr::read;
 use std::ops::{Deref, DerefMut};
@@ -5,19 +7,31 @@ use std::slice::{self, from_raw_parts, from_raw_parts_mut};
 use std::iter::FromIterator;
 use vector::Vector;
 use array::{Array, ArrayIndex};
-use util::{PointerExt, DropGuard};
+use util::PointerExt;
+use nodrop::NoDrop;
 
-#[derive(Debug, Hash)]
 pub struct ArrayVec<T: Array> {
-    array: DropGuard<T>,
+    array: NoDrop<T>,
     len: T::Index,
+}
+
+impl<T: Array> fmt::Debug for ArrayVec<T> where T::Item: fmt::Debug {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(&self[..], fmt)
+    }
+}
+
+impl<T: Array> Hash for ArrayVec<T> where T::Item: Hash {
+    fn hash<H: Hasher>(&self, h: &mut H) {
+        self[..].hash(h)
+    }
 }
 
 impl<T: Array> ArrayVec<T> {
     pub fn into_inner(mut self) -> Result<T, Self> {
         if self.len() == self.capacity() {
             self.len = Default::default();
-            Ok(unsafe { self.array.into_inner() })
+            Ok(unsafe { read(&*self.array) })
         } else {
             Err(self)
         }
@@ -32,7 +46,7 @@ impl<T: Array> Vector for ArrayVec<T> {
         assert!(cap <= T::len());
 
         ArrayVec {
-            array: DropGuard::new(unsafe { T::uninitialized() }),
+            array: NoDrop::new(unsafe { T::uninitialized() }),
             len: Default::default(),
         }
     }
@@ -84,7 +98,7 @@ impl<T: Array> Drop for ArrayVec<T> {
 impl<T: Array> From<T> for ArrayVec<T> {
     fn from(array: T) -> Self {
         ArrayVec {
-            array: DropGuard::new(array),
+            array: NoDrop::new(array),
             len: ArrayIndex::from_usize(T::len()),
         }
     }
