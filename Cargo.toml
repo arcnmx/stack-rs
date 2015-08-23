@@ -1,0 +1,18 @@
+[package]
+name = "stack"
+version = "0.1.0"
+authors = ["arcnmx"]
+
+description = "DSTs and arrays on the stack!"
+documentation = "http://arcnmx.github.io/stack-rs/stack/"
+repository = "https://github.com/arcnmx/stack-rs"
+readme = "README.md"
+keywords = ["smallvec", "array", "vec", "dst", "stack"]
+license = "MIT"
+
+[dependencies]
+coalesce = "0.1"
+unreachable = "0.0"
+
+[features]
+unstable = []
