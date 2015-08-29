@@ -12,7 +12,6 @@ mod array_vec;
 mod small_dst;
 mod small_vec;
 
-pub use util::PointerExt;
 pub use array::{Array, ArrayIndex, Addressable};
 pub use vector::Vector;
 pub use small_vec::{SmallVec, Spilled};

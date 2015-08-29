@@ -5,7 +5,7 @@
 Implements dynamically sized types over stack allocated arrays.
 
 - The `Vector` trait exposes a generic trait for `Vec`-like operations.
-- `ArrayVec` implements a `Vec` interface over a fixed-size array.
+- `ArrayVec` implements a `Vector` interface over a fixed-size array.
 - `SmallVec` abstracts over a stack allocated `ArrayVec`, and falls back to a
    heap `Vec` upon overflow.
 - `SmallDST` holds a DST such as a closure or other types in a `Vector`.
