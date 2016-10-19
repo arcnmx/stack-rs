@@ -1,5 +1,5 @@
 (function() {var implementors = {};
-implementors['stack'] = [];
+implementors["stack"] = [];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);
