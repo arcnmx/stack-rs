@@ -1,6 +1,6 @@
 use std::fmt;
 use std::hash::{Hash, Hasher};
-use std::mem::{size_of, uninitialized};
+use std::mem::size_of;
 use std::ptr::read;
 use std::ops::{Deref, DerefMut};
 use std::slice::{self, from_raw_parts, from_raw_parts_mut};
