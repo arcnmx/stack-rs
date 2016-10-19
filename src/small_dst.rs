@@ -93,36 +93,15 @@ impl<T: ?Sized, A: Vector<Item=usize>> SmallDST<T, A> {
 }
 
 impl<T: ?Sized, A: Vector<Item=usize>> Drop for SmallDST<T, A> {
-    #[cfg(feature = "unstable")]
     #[inline]
     fn drop(&mut self) {
-        use std::intrinsics;
-
-        unsafe { intrinsics::drop_in_place(&mut **self); }
-    }
-
-    #[cfg(not(feature = "unstable"))]
-    fn drop(&mut self) {
-        use ::SmallVec;
-        use std::rc::Rc;
-
-        struct RcBox<T: ?Sized> {
-            _strong: usize,
-            _weak: usize,
-            _value: T,
-        }
+        use std::ptr;
 
         unsafe {
-            let mut rc_box: SmallDST<T, SmallVec<[usize; 0x10]>> = SmallDST::from_ref(&RcBox {
-                _strong: 1,
-                _weak: 2,
-                _value: (),
-            }, &Self::ref_data(&(&**self as *const T))[1..]);
-            rc_box.data.reserve_exact(self.data.len() - Self::data_len());
-            rc_box.data.extend(self.data.as_slice()[Self::data_len()..].iter().cloned());
-            let rc: Rc<T> = transmute(&mut *rc_box);
-            drop(rc); // TODO: DropGuard
-            forget(rc_box);
+            if self.data.len() > 0 {
+                self.data.set_len(0);
+                ptr::drop_in_place(&mut **self);
+            }
         }
     }
 }

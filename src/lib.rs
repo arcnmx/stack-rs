@@ -1,4 +1,4 @@
-#![cfg_attr(feature = "unstable", feature(unsize, core_intrinsics))]
+#![cfg_attr(feature = "unstable", feature(unsize))]
 
 #[macro_use]
 extern crate coalesce;
