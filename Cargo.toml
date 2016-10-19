@@ -4,10 +4,11 @@ version = "0.2.0"
 authors = ["arcnmx"]
 
 description = "DSTs and arrays on the stack!"
+keywords = ["smallvec", "array", "vec", "dst", "stack"]
+
 documentation = "http://arcnmx.github.io/stack-rs/stack/"
 repository = "https://github.com/arcnmx/stack-rs"
 readme = "README.md"
-keywords = ["smallvec", "array", "vec", "dst", "stack"]
 license = "MIT"
 
 [dependencies]

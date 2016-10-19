@@ -17,5 +17,5 @@ Implements dynamically sized types over stack allocated arrays.
 [cargo]: https://crates.io/crates/stack
 [docs-badge]: https://img.shields.io/badge/API-docs-blue.svg?style=flat-square
 [docs]: http://arcnmx.github.io/stack-rs/stack/
-[license-badge]: https://img.shields.io/badge/license-MIT-lightgray.svg?style=flat-square
+[license-badge]: https://img.shields.io/badge/license-MIT-ff69b4.svg?style=flat-square
 [license]: https://github.com/arcnmx/stack-rs/blob/master/COPYING
