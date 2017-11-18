@@ -1,6 +1,6 @@
 [package]
 name = "stack"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["arcnmx"]
 
 description = "DSTs and arrays on the stack!"
@@ -10,6 +10,10 @@ documentation = "http://arcnmx.github.io/stack-rs/stack/"
 repository = "https://github.com/arcnmx/stack-rs"
 readme = "README.md"
 license = "MIT"
+
+[badges]
+travis-ci = { repository = "arcnmx/stack-rs" }
+maintenance = { status = "passively-maintained" }
 
 [dependencies]
 coalesce = "0.1"
