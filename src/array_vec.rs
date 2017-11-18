@@ -1,17 +1,16 @@
 use std::fmt;
 use std::hash::{Hash, Hasher};
-use std::mem::size_of;
-use std::ptr::read;
+use std::mem::{ManuallyDrop, size_of};
+use std::ptr::{read, drop_in_place};
 use std::ops::{Deref, DerefMut};
 use std::slice::{self, from_raw_parts, from_raw_parts_mut};
 use std::iter::FromIterator;
 use vector::Vector;
 use array::{Array, ArrayIndex};
 use util::PointerExt;
-use nodrop::NoDrop;
 
 pub struct ArrayVec<T: Array> {
-    array: NoDrop<T>,
+    array: ManuallyDrop<T>,
     len: T::Index,
 }
 
@@ -46,7 +45,7 @@ impl<T: Array> Vector for ArrayVec<T> {
         assert!(cap <= T::len());
 
         ArrayVec {
-            array: NoDrop::new(unsafe { T::uninitialized() }),
+            array: ManuallyDrop::new(unsafe { T::uninitialized() }),
             len: Default::default(),
         }
     }
@@ -83,12 +82,12 @@ impl<T: Array> Drop for ArrayVec<T> {
     fn drop(&mut self) {
         let len = ArrayIndex::to_usize(self.len);
         if len > 0 {
-            let ptr = self.array.as_ptr();
+            let ptr = self.array.as_mut_ptr();
 
             unsafe {
                 self.set_len(0);
                 for i in 0..len {
-                    read(ptr.uoffset(i));
+                    drop_in_place(ptr.uoffset(i));
                 }
             }
         }
@@ -98,7 +97,7 @@ impl<T: Array> Drop for ArrayVec<T> {
 impl<T: Array> From<T> for ArrayVec<T> {
     fn from(array: T) -> Self {
         ArrayVec {
-            array: NoDrop::new(array),
+            array: ManuallyDrop::new(array),
             len: ArrayIndex::from_usize(T::len()),
         }
     }
