@@ -1,19 +1,17 @@
-use std::mem::size_of;
-
 pub trait PointerExt {
-    fn uoffset(self, off: usize) -> Self;
+    unsafe fn uoffset(self, off: usize) -> Self;
 }
 
 impl<T> PointerExt for *const T {
     #[inline]
-    fn uoffset(self, off: usize) -> Self {
-        (self as usize + off * size_of::<T>()) as *const _
+    unsafe fn uoffset(self, off: usize) -> Self {
+        self.offset(off as isize)
     }
 }
 
 impl<T> PointerExt for *mut T {
     #[inline]
-    fn uoffset(self, off: usize) -> Self {
-        (self as usize + off * size_of::<T>()) as *mut _
+    unsafe fn uoffset(self, off: usize) -> Self {
+        self.offset(off as isize)
     }
 }
