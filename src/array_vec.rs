@@ -5,9 +5,9 @@ use std::ptr::{read, drop_in_place};
 use std::ops::{Deref, DerefMut};
 use std::slice::{self, from_raw_parts, from_raw_parts_mut};
 use std::iter::FromIterator;
-use vector::Vector;
-use array::{Array, ArrayIndex};
-use util::PointerExt;
+use crate::vector::Vector;
+use crate::array::{Array, ArrayIndex};
+use crate::util::PointerExt;
 
 pub struct ArrayVec<T: Array> {
     array: MaybeUninit<T>,

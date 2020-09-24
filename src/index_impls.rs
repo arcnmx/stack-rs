@@ -1,7 +1,8 @@
 use std::ops::{Index, IndexMut, Range, RangeFrom, RangeTo, RangeFull};
-use array_vec::ArrayVec;
-use small_vec::{SmallVec, Spilled};
-use array::Array;
+use crate::array_vec::ArrayVec;
+use crate::small_vec::{SmallVec, Spilled};
+use coalesce::coalesce;
+use crate::array::Array;
 
 macro_rules! index_impl {
     ($t:ty) => {

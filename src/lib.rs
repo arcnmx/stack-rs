@@ -1,8 +1,5 @@
 #![cfg_attr(feature = "unstable", feature(unsize))]
 
-#[macro_use]
-extern crate coalesce;
-
 mod util;
 mod array;
 mod vector;

@@ -4,7 +4,7 @@ use std::ptr::copy_nonoverlapping;
 use std::mem::{MaybeUninit, forget, size_of, align_of};
 use std::slice::{from_raw_parts, from_raw_parts_mut};
 use std::marker;
-use ::{ArrayVec, Vector};
+use crate::{ArrayVec, Vector};
 
 #[macro_export]
 macro_rules! small_dst {

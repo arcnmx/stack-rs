@@ -4,10 +4,7 @@
  * of the MIT license. See the COPYING file for details.
  */
 
-#[macro_use]
-extern crate stack;
-
-use stack::{SmallVec, ArrayVec, SmallDST};
+use stack::{SmallVec, ArrayVec, SmallDST, small_dst};
 
 #[test]
 // A trivial check that ensures that methods are correctly called

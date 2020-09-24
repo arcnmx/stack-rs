@@ -5,10 +5,10 @@ use std::ops::{Deref, DerefMut};
 use std::iter::FromIterator;
 use std::hash::{Hash, Hasher};
 use std::hint::unreachable_unchecked;
-use coalesce::Coalesce2;
-use array_vec::ArrayVec;
-use vector::Vector;
-use array::Array;
+use coalesce::{Coalesce2, coalesce};
+use crate::array_vec::ArrayVec;
+use crate::vector::Vector;
+use crate::array::Array;
 
 #[path = "index_impls.rs"]
 mod index_impls;

@@ -1,7 +1,7 @@
 use std::mem::transmute;
 use std::ptr::{read, write, swap, copy};
 use std::slice::{from_raw_parts, from_raw_parts_mut};
-use util::PointerExt;
+use crate::util::PointerExt;
 
 pub unsafe trait Vector {
     type Item;

@@ -1,5 +1,3 @@
-extern crate stack;
-
 use stack::{ArrayVec, SmallVec, Vector, Addressable};
 
 #[test]

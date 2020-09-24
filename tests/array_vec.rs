@@ -4,8 +4,6 @@
  * of the MIT license. See the COPYING file for details.
  */
 
-extern crate stack;
-
 use stack::{ArrayVec, Vector};
 use std::mem;
 
