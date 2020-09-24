@@ -37,7 +37,7 @@ impl<T: Array> ArrayVec<T> {
     }
 }
 
-impl<T: Array> Vector for ArrayVec<T> {
+unsafe impl<T: Array> Vector for ArrayVec<T> {
     type Item = T::Item;
 
     #[inline]

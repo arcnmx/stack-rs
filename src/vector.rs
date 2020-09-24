@@ -3,7 +3,7 @@ use std::ptr::{read, write, swap, copy};
 use std::slice::{from_raw_parts, from_raw_parts_mut};
 use util::PointerExt;
 
-pub trait Vector {
+pub unsafe trait Vector {
     type Item;
 
     #[inline]
@@ -164,7 +164,7 @@ pub trait Vector {
     }
 }
 
-impl<T> Vector for Vec<T> {
+unsafe impl<T> Vector for Vec<T> {
     type Item = T;
 
     #[inline] fn new() -> Self { Vec::new() }

@@ -72,7 +72,7 @@ impl<T: Array, S> From<ArrayVec<T>> for SmallVec<T, S> {
     }
 }
 
-impl<T: Array, S: Vector<Item=T::Item> + Spilled<ArrayVec<T>>> Vector for SmallVec<T, S> {
+unsafe impl<T: Array, S: Vector<Item=T::Item> + Spilled<ArrayVec<T>>> Vector for SmallVec<T, S> {
     type Item = T::Item;
 
     #[inline]
