@@ -49,9 +49,10 @@ pub trait Vector {
     }
 
     fn insert(&mut self, index: usize, element: Self::Item) {
+        let len = self.len();
+        assert!(index <= len);
         self.reserve(1);
         unsafe {
-            let len = self.len();
             let ptr = self.as_mut_ptr().uoffset(index);
             copy(ptr, ptr.uoffset(1), len - index);
             write(ptr, element);
