@@ -2,7 +2,6 @@
 
 #[macro_use]
 extern crate coalesce;
-extern crate unreachable;
 
 mod util;
 mod array;

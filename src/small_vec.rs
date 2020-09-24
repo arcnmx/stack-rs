@@ -4,7 +4,7 @@ use std::ptr::copy_nonoverlapping;
 use std::ops::{Deref, DerefMut};
 use std::iter::FromIterator;
 use std::hash::{Hash, Hasher};
-use unreachable::unreachable;
+use std::hint::unreachable_unchecked;
 use coalesce::Coalesce2;
 use array_vec::ArrayVec;
 use vector::Vector;
@@ -45,7 +45,7 @@ impl<T: Array, S: Vector + Spilled<ArrayVec<T>>> SmallVec<T, S> {
         if !self.is_spilled() {
             match replace(&mut self.0, Coalesce2::B(S::new())) {
                 Coalesce2::A(v) => { replace(&mut self.0, Coalesce2::B(S::spill(v))); },
-                _ => unsafe { unreachable() },
+                _ => unsafe { unreachable_unchecked() },
             }
         }
     }
