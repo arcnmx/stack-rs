@@ -126,8 +126,8 @@ fn test_extend() {
 #[test]
 fn test_is_send_sync() {
     let data = ArrayVec::<[Vec<i32>; 5]>::new();
-    &data as &Send;
-    &data as &Sync;
+    &data as &dyn Send;
+    &data as &dyn Sync;
 }
 
 #[test]

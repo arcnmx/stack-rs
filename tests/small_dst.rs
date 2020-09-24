@@ -12,7 +12,7 @@ use stack::{SmallVec, ArrayVec, SmallDST};
 #[test]
 // A trivial check that ensures that methods are correctly called
 fn trivial_type() {
-    let val: SmallDST<PartialEq<u32>> = small_dst!(1234u32);
+    let val: SmallDST<dyn PartialEq<u32>> = small_dst!(1234u32);
     assert!( *val == 1234 );
     assert!( *val != 1233 );
 }
@@ -27,7 +27,7 @@ fn ensure_drop() {
     impl<'a> Drop for Struct<'a> { fn drop(&mut self) { let v = self.0.get(); self.0.set(v + 1); } }
     
     let flag = Cell::new(0);
-    let val: SmallDST<::std::fmt::Debug> = small_dst!(Struct(&flag));
+    let val: SmallDST<dyn std::fmt::Debug> = small_dst!(Struct(&flag));
     assert!(flag.get() == 0);
     drop(val);
     assert!(flag.get() == 1);
@@ -40,7 +40,7 @@ fn many_instances() {
     }
     
     #[inline(never)]
-    fn instance_one() -> SmallDST<TestTrait> {
+    fn instance_one() -> SmallDST<dyn TestTrait> {
         struct OneStruct(u32);
         impl TestTrait for OneStruct {
             fn get_value(&self) -> u32 { self.0 }
@@ -49,7 +49,7 @@ fn many_instances() {
     }
     
     #[inline(never)]
-    fn instance_two() -> SmallDST<TestTrait> {
+    fn instance_two() -> SmallDST<dyn TestTrait> {
         struct TwoStruct;
         impl TestTrait for TwoStruct {
             fn get_value(&self) -> u32 { 54321 }
@@ -66,27 +66,27 @@ fn many_instances() {
 #[test]
 fn closure() {
     let v1 = 1234u64;
-    let c: SmallDST<Fn() -> String> = small_dst!(|| format!("{}", v1));
+    let c: SmallDST<dyn Fn() -> String> = small_dst!(|| format!("{}", v1));
     assert_eq!(c(), "1234");
 }
 
 #[test]
 fn undersize() {
     use std::any::Any;
-    let _: SmallDST<Any, ArrayVec<[usize; 8]>> = small_dst!([0usize; 7]);
+    let _: SmallDST<dyn Any, ArrayVec<[usize; 8]>> = small_dst!([0usize; 7]);
 }
 
 #[test]
 #[should_panic]
 fn oversize() {
     use std::any::Any;
-    let _: SmallDST<Any, ArrayVec<[usize; 8]>> = small_dst!([0usize; 8]);
+    let _: SmallDST<dyn Any, ArrayVec<[usize; 8]>> = small_dst!([0usize; 8]);
 }
 
 #[test]
 fn spill() {
     use std::any::Any;
-    let dst: SmallDST<Any, SmallVec<[usize; 8]>> = small_dst!([0usize; 8]);
+    let dst: SmallDST<dyn Any, SmallVec<[usize; 8]>> = small_dst!([0usize; 8]);
     unsafe {
         assert!(dst.data().is_spilled());
     }

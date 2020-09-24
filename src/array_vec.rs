@@ -118,9 +118,9 @@ impl<T: Array> ArrayVecIntoIter<T> {
         };
 
         ArrayVecIntoIter {
-            inner: inner,
-            start: start,
-            end: end,
+            inner,
+            start,
+            end,
         }
     }
 

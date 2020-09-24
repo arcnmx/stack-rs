@@ -44,7 +44,7 @@ impl<T: Array, S: Vector + Spilled<ArrayVec<T>>> SmallVec<T, S> {
     pub fn spill(&mut self) {
         if !self.is_spilled() {
             match replace(&mut self.0, Coalesce2::B(S::new())) {
-                Coalesce2::A(v) => { replace(&mut self.0, Coalesce2::B(S::spill(v))); },
+                Coalesce2::A(v) => { self.0 = Coalesce2::B(S::spill(v)); },
                 _ => unsafe { unreachable_unchecked() },
             }
         }
@@ -242,13 +242,13 @@ impl<T: Array, S: fmt::Debug + Vector<Item=T::Item> + Spilled<ArrayVec<T>>> fmt:
         fmt.debug_struct("SmallVec")
             .field("is_spilled", &self.is_spilled())
             .field("capacity", &self.capacity())
-            .field("data", &coalesce!(2 => |v| v as &fmt::Debug))
+            .field("data", &coalesce!(2 => |v| v as &dyn fmt::Debug))
             .finish()
     }
 }
 
-impl<'a, T: Array + 'a, S: Vector<Item=T::Item> + 'a> AsRef<Vector<Item=T::Item> + 'a> for SmallVec<T, S> where T::Item: 'a, T::Index: 'a {
-    fn as_ref(&self) -> &(Vector<Item=T::Item> + 'a) {
+impl<'a, T: Array + 'a, S: Vector<Item=T::Item> + 'a> AsRef<dyn Vector<Item=T::Item> + 'a> for SmallVec<T, S> where T::Item: 'a, T::Index: 'a {
+    fn as_ref(&self) -> &(dyn Vector<Item=T::Item> + 'a) {
         let v = self.0.as_ref();
         coalesce!(2 => |v| v as &_)
     }
