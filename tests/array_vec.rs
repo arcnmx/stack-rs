@@ -183,7 +183,7 @@ fn test_in_option() {
     let mut v = Some(ArrayVec::<[&i32; 1]>::new());
     assert!(v.is_some());
     unsafe {
-        *v.as_mut().unwrap().get_unchecked_mut(0) = mem::zeroed();
+        *(v.as_mut().unwrap().as_mut_ptr() as *mut mem::MaybeUninit<&i32>) = mem::MaybeUninit::zeroed();
     }
     assert!(v.is_some());
 }

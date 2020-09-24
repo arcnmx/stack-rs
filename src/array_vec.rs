@@ -1,6 +1,6 @@
 use std::fmt;
 use std::hash::{Hash, Hasher};
-use std::mem::{ManuallyDrop, size_of};
+use std::mem::{MaybeUninit, size_of};
 use std::ptr::{read, drop_in_place};
 use std::ops::{Deref, DerefMut};
 use std::slice::{self, from_raw_parts, from_raw_parts_mut};
@@ -10,7 +10,7 @@ use array::{Array, ArrayIndex};
 use util::PointerExt;
 
 pub struct ArrayVec<T: Array> {
-    array: ManuallyDrop<T>,
+    array: MaybeUninit<T>,
     len: T::Index,
 }
 
@@ -30,7 +30,7 @@ impl<T: Array> ArrayVec<T> {
     pub fn into_inner(mut self) -> Result<T, Self> {
         if self.len() == self.capacity() {
             self.len = Default::default();
-            Ok(unsafe { read(&*self.array) })
+            Ok(unsafe { read(self.array.as_ptr()) })
         } else {
             Err(self)
         }
@@ -45,7 +45,7 @@ impl<T: Array> Vector for ArrayVec<T> {
         assert!(cap <= T::len());
 
         ArrayVec {
-            array: ManuallyDrop::new(unsafe { T::uninitialized() }),
+            array: MaybeUninit::uninit(),
             len: Default::default(),
         }
     }
@@ -69,12 +69,12 @@ impl<T: Array> Vector for ArrayVec<T> {
 
     #[inline]
     fn as_ptr(&self) -> *const T::Item {
-        self.array.as_ptr()
+        Array::as_uninit(&self.array).as_ptr() as *const _
     }
 
     #[inline]
     fn as_mut_ptr(&mut self) -> *mut T::Item {
-        self.array.as_mut_ptr()
+        Array::as_uninit_mut(&mut self.array).as_mut_ptr() as *mut _
     }
 }
 
@@ -82,7 +82,7 @@ impl<T: Array> Drop for ArrayVec<T> {
     fn drop(&mut self) {
         let len = ArrayIndex::to_usize(self.len);
         if len > 0 {
-            let ptr = self.array.as_mut_ptr();
+            let ptr = Array::as_uninit_mut(&mut self.array).as_mut_ptr() as *mut T::Item;
 
             unsafe {
                 self.set_len(0);
@@ -97,7 +97,7 @@ impl<T: Array> Drop for ArrayVec<T> {
 impl<T: Array> From<T> for ArrayVec<T> {
     fn from(array: T) -> Self {
         ArrayVec {
-            array: ManuallyDrop::new(array),
+            array: MaybeUninit::new(array),
             len: ArrayIndex::from_usize(T::len()),
         }
     }
@@ -260,12 +260,12 @@ impl<T: Array> Deref for ArrayVec<T> {
     type Target = [T::Item];
 
     fn deref(&self) -> &Self::Target {
-        unsafe { from_raw_parts(self.array.as_ptr(), ArrayIndex::to_usize(self.len)) }
+        unsafe { from_raw_parts(Array::as_uninit(&self.array).as_ptr() as *const _, ArrayIndex::to_usize(self.len)) }
     }
 }
 
 impl<T: Array> DerefMut for ArrayVec<T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        unsafe { from_raw_parts_mut(self.array.as_mut_ptr(), ArrayIndex::to_usize(self.len)) }
+        unsafe { from_raw_parts_mut(Array::as_uninit_mut(&mut self.array).as_mut_ptr() as *mut _, ArrayIndex::to_usize(self.len)) }
     }
 }

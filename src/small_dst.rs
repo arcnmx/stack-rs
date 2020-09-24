@@ -1,7 +1,7 @@
 use std::fmt;
 use std::ops::{Deref, DerefMut};
-use std::ptr::{copy_nonoverlapping};
-use std::mem::{uninitialized, transmute, forget, size_of, align_of};
+use std::ptr::copy_nonoverlapping;
+use std::mem::{MaybeUninit, forget, size_of, align_of};
 use std::slice::{from_raw_parts, from_raw_parts_mut};
 use std::marker;
 use ::{ArrayVec, Vector};
@@ -43,8 +43,12 @@ impl<T: ?Sized, A: Vector<Item=usize>> SmallDST<T, A> {
         unsafe { from_raw_parts(v as *const *const T as *const usize, Self::ptr_len()) }
     }
 
-    fn mut_data<'a>(v: &'a mut *const T) -> &'a mut [usize] {
-        unsafe { from_raw_parts_mut(v as *mut *const T as *mut usize, Self::ptr_len()) }
+    fn mut_data_const<'a>(v: &'a mut MaybeUninit<*const T>) -> &'a mut [MaybeUninit<usize>] {
+        unsafe { from_raw_parts_mut(v.as_mut_ptr() as *mut usize as *mut MaybeUninit<usize>, Self::ptr_len()) }
+    }
+
+    fn mut_data_mut<'a>(v: &'a mut MaybeUninit<*mut T>) -> &'a mut [MaybeUninit<usize>] {
+        unsafe { from_raw_parts_mut(v.as_mut_ptr() as *mut usize as *mut MaybeUninit<usize>, Self::ptr_len()) }
     }
 
     #[cfg(feature = "unstable")]
@@ -119,13 +123,13 @@ impl<T: ?Sized, A: Vector<Item=usize>> Deref for SmallDST<T, A> {
     #[inline]
     fn deref(&self) -> &Self::Target {
         unsafe {
-            let mut v: *const T = uninitialized();
+            let mut v = MaybeUninit::uninit();
             {
-                let v = Self::mut_data(&mut v);
-                v[0] = self.data.as_ptr().offset(Self::data_len() as isize) as usize;
-                copy_nonoverlapping(self.data.as_ptr(), v[1..].as_mut_ptr(), Self::data_len());
+                let v = Self::mut_data_const(&mut v);
+                v[0] = MaybeUninit::new(self.data.as_ptr().offset(Self::data_len() as isize) as usize);
+                copy_nonoverlapping(self.data.as_ptr(), v[1..].as_mut_ptr() as *mut usize, Self::data_len());
             }
-            transmute(v)
+            &*v.assume_init()
         }
     }
 }
@@ -134,13 +138,13 @@ impl<T: ?Sized, A: Vector<Item=usize>> DerefMut for SmallDST<T, A> {
     #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe {
-            let mut v: *const T = uninitialized();
+            let mut v = MaybeUninit::uninit();
             {
-                let v = Self::mut_data(&mut v);
-                v[0] = self.data.as_ptr().offset(Self::data_len() as isize) as usize;
-                copy_nonoverlapping(self.data.as_ptr(), v[1..].as_mut_ptr(), Self::data_len());
+                let v = Self::mut_data_mut(&mut v);
+                v[0] = MaybeUninit::new(self.data.as_ptr().offset(Self::data_len() as isize) as usize);
+                copy_nonoverlapping(self.data.as_ptr(), v[1..].as_mut_ptr() as *mut usize, Self::data_len());
             }
-            transmute(v as *mut T)
+            &mut *v.assume_init()
         }
     }
 }

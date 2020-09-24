@@ -1,16 +1,18 @@
-use std::mem::uninitialized;
 use std::ops::{Index, IndexMut, Deref, DerefMut, Range, RangeFrom, RangeTo, RangeFull};
+use std::mem::{MaybeUninit, transmute};
 use std::hash::Hash;
 use std::fmt::Debug;
 
-pub unsafe trait Array {
+pub unsafe trait Array: Sized {
     type Item;
     type Index: ArrayIndex;
 
     fn len() -> usize;
     fn as_ptr(&self) -> *const Self::Item;
     fn as_mut_ptr(&mut self) -> *mut Self::Item;
-    unsafe fn uninitialized() -> Self where Self: Sized { uninitialized() }
+
+    fn as_uninit(this: &MaybeUninit<Self>) -> &[MaybeUninit<Self::Item>];
+    fn as_uninit_mut(this: &mut MaybeUninit<Self>) -> &mut [MaybeUninit<Self::Item>];
 }
 
 pub trait ArrayIndex: Sized + Copy + Clone + Default + Hash + Debug + PartialEq + Eq + PartialOrd + Ord {
@@ -76,6 +78,8 @@ macro_rules! array_impl {
             fn len() -> usize { $t }
             fn as_ptr(&self) -> *const Self::Item { self[..].as_ptr() }
             fn as_mut_ptr(&mut self) -> *mut Self::Item { self[..].as_mut_ptr() }
+            fn as_uninit(this: &MaybeUninit<Self>) -> &[MaybeUninit<Self::Item>] { unsafe { &transmute::<_, &[MaybeUninit<T>; $t]>(this)[..] } }
+            fn as_uninit_mut(this: &mut MaybeUninit<Self>) -> &mut [MaybeUninit<Self::Item>] { unsafe { &mut transmute::<_, &mut [MaybeUninit<T>; $t]>(this)[..] } }
         }
     };
     ($i:ty => $($t:expr),+) => {
